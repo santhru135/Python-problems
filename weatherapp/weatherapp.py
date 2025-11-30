@@ -30,7 +30,7 @@ def name():
     temp, wind = result["main"]["temp"], result["wind"]["speed"]
     
     final = {"Weather report for the city" : result["name"], 
-                                    "Temp" : temp, 
+                                    "Temperature" : temp, 
                                     "wind" : wind
     }
     return jsonify(final)
