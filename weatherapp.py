@@ -1,17 +1,40 @@
+from flask import Flask, request, jsonify
+
 import requests
 
-API_KEY = "bd5e378503939ddaee76f12ad7a97608"
-city = input("Enter city name: ")
+app = Flask(__name__)
 
-url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
-response = requests.get(url)
-data = response.json()
+api = "api key here"
+url = "https://api.openweathermap.org/data/2.5/weather"
 
-if response.status_code == 200:
-    print(f"\nWeather in {city.title()}: {data['weather'][0]['description'].title()}")
-    print(f"Temperature: {data['main']['temp']}°C")
-    print(f"Feels Like: {data['main']['feels_like']}°C")
-    print(f"Humidity: {data['main']['humidity']}%")
-    print(f"Wind Speed: {data['wind']['speed']} m/s")
-else:
-    print("\nError:", data.get("message", "Unable to fetch weather details"))
+@app.route("/api")
+def name():
+    city = request.args.get("city")
+    
+    if not city:
+        return jsonify("error : city not found" )
+    
+    payload = {
+            "q" : city,
+            "appid" : api,
+            "units" : "metric"
+        }
+
+    response = requests.get(url, params = payload)
+
+    result = response.json()
+    
+    if result.get("cod") != 200:
+        return jsonify({f"{city} is not found, recheck the city name"})
+    
+    temp, wind = result["main"]["temp"], result["wind"]["speed"]
+    
+    final = {"Weather report for the city" : result["name"], 
+                                    "Temperature" : temp, 
+                                    "wind" : wind
+    }
+    return jsonify(final)
+    
+if __name__ == "__main__":
+    app.run(debug=True)
+    
