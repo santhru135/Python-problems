@@ -1,6 +1,6 @@
 def add_task(todo):
     task = input("Enter the task to add: ")
-    if task.strip():  # Avoid adding empty tasks
+    if task.strip():
         todo.append(task)
         print(f'Task "{task}" added to the list.')
     else:
@@ -12,13 +12,13 @@ def remove_task(todo):
         return
     task = input("Enter the task to remove: ")
     if task in todo:
-        todo.remove(task)
+        todo.remove(todo[todo.index(task)])
         print(f'Task "{task}" removed from the list.')
     else:
         print(f'Task "{task}" not found in the list.')
 
 def view_tasks(todo):
-    if not todo:
+    if not todo: 
         print("No tasks in the list.")
     else:
         print("Tasks in the list:")
@@ -28,12 +28,12 @@ def view_tasks(todo):
 def todo_list():
     todo = []
     while True:
-        func_name = input("Enter function name (add_task, remove_task, view_tasks, quit): ").lower()
-        if func_name == 'add_task':
+        func_name = input(" 1.Add Task\n 2.Remove Task\n 3.View Tasks\n 4.Quit.\n Enter function name: ").lower()
+        if func_name == 'Add Task'.lower():
             add_task(todo)
-        elif func_name == 'remove_task':
+        elif func_name == 'Remove Task'.lower():
             remove_task(todo)
-        elif func_name == 'view_tasks':
+        elif func_name == 'View Tasks'.lower():
             view_tasks(todo)
         elif func_name == 'quit':
             print("Exiting the todo list.")
